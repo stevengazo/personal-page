@@ -11,20 +11,8 @@ function App() {
 
   return (
     <>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-            <Link to="/contact">Home</Link>
-          </li>
-        </ul>
-      </nav>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/contact" element={<Contact />} />
-        </Routes>
-      </Router>
+   <Home/>
+ 
     </>
   );
 }
