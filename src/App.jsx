@@ -5,6 +5,7 @@ import Contact from "./Pages/Contact/Contact";
 import Home from "./Pages/Home/Home.jsx";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
+import { PacmanLoader } from "react-spinners";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -12,6 +13,7 @@ function App() {
   return (
     <>
    <Home/>
+
  
     </>
   );
