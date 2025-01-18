@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { ThemeProvider } from "@mui/material";
+import { Element } from "react-scroll";
 
-import Contact from "./Pages/Contact/Contact";
-import Home from "./Pages/Home/Home.jsx";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import NavBar from "./Components/NavBar.jsx";
+import Hero from "./Components/Hero.jsx";
+import Projects from "./Components/Projects.jsx";
 import { PacmanLoader } from "react-spinners";
 
 function App() {
@@ -12,9 +12,10 @@ function App() {
 
   return (
     <>
-   <Home/>
+      <Element>
+        <Hero />
+      </Element>
 
- 
     </>
   );
 }
