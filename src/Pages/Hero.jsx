@@ -1,9 +1,10 @@
 import { FaLinkedin, FaGithub, FaTwitter } from "react-icons/fa";
+import { TbBackground } from "react-icons/tb";
 import { PacmanLoader } from "react-spinners";
 
 const Hero = () => {
   return (
-    <div className="w-full bg-blue-900 h-screen sticky top-0 flex flex-col items-center justify-center text-white">
+    <div className="w-full bg-black h-screen sticky top-0 flex flex-col items-center justify-center text-white">
       <h1 className="text-4xl font-bold mb-4">Steven Gazo M</h1>
       <h2 className="text-2xl font-extralight opacity-90">
         Desarrollador Junior
