@@ -29,7 +29,7 @@ function App() {
         <Element name="Projects">
           <Projects />
         </Element>
-        <Element name="Projects">
+        <Element name="Contacts">
           <Contact />
         </Element>
       </div>

@@ -14,9 +14,9 @@ const NavBar = () => {
         <Link to="Projects" smooth duration={500} className="hover:font-semibold hover:text-blue-400  hover:mx-4 transition-all duration-750">
           Projects
         </Link>
-        <li className="hover:font-semibold hover:text-blue-400  hover:mx-4 transition-all duration-750">
+        <Link to="Contacts" smooth duration={500}  className="hover:font-semibold hover:text-blue-400  hover:mx-4 transition-all duration-750">
           Contact
-        </li>
+        </Link>
       </ul>
     </div>
   );
