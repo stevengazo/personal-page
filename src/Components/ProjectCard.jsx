@@ -1,6 +1,6 @@
 const ProjectCard = ({ title, sortDescription, description, tags }) => {
   return (
-    <div className="border border-white md:h-36 rounded-md p-3 w-full max-w-sm sm:w-full sm:h-32 hover:bg-slate-800 duration-500 transition box-content">
+    <div className="border  md:h-36 rounded-md p-3 w-full max-w-sm sm:w-full sm:h-32 hover:bg-slate-800 duration-500 transition box-content">
       <h5 className="text-white text-xl sm:text-sm sm:font-semibold">
         {title}
       </h5>

@@ -27,7 +27,7 @@ const Projects = () => {
           Proyectos
         </h2>
 
-        <div className="border md:mx-6 md:p-2 flex  sm:flex-col lg:flex-row sm:w-full sm:mx-4 sm:p-5 sm:justify-start md:gap-3 md:w-full md:h-5/6 md:justify-around md:border-dashed">
+        <div className="md:mx-6 md:p-2 flex  sm:flex-col lg:flex-row sm:w-full sm:mx-4 sm:p-5 sm:justify-start md:gap-3 md:w-full md:h-5/6 md:justify-around ">
           <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:place-items-center lg:place-items-center">
             {projects && projects.length > 0 ? (
               projects.map((project, index) => (
