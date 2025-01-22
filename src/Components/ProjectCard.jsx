@@ -1,6 +1,11 @@
-const ProjectCard = ({ title, sortDescription, description, tags }) => {
+import { FaGithub } from "react-icons/fa";
+
+const ProjectCard = ({ title, sortDescription, description, tags, gitHub }) => {
   return (
-    <div className="border  md:h-36 rounded-md p-3 w-full max-w-sm sm:w-full sm:h-32 hover:bg-slate-800 duration-500 transition box-content">
+    <div className="border relative md:h-36 rounded-md p-3 w-full max-w-sm sm:w-full sm:h-32 hover:bg-slate-800 duration-500 transition box-content">
+      <a href={gitHub} target="_blank" className="absolute top-2 right-2">
+        <FaGithub size={20} className="text-white hover:scale-110 duration-300 transition" />
+      </a>
       <h5 className="text-white text-xl sm:text-sm sm:font-semibold">
         {title}
       </h5>
@@ -10,6 +15,7 @@ const ProjectCard = ({ title, sortDescription, description, tags }) => {
       <p className="text-white text-sm italic sm:hidden md:block">
         {description}
       </p>
+
       <ul className="flex flex-wrap gap-2 m-2">
         {tags.map((tag, index) => (
           <li

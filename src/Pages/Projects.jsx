@@ -37,6 +37,7 @@ const Projects = () => {
                   sortDescription={project.fields.sortDescription}
                   description={project.fields.description}
                   tags={project.fields.tags}
+                  gitHub={project.fields.gitHub}
                 />
               ))
             ) : (
