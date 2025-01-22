@@ -1,16 +1,24 @@
-const ProjectCard = ({ title, sortDescription }) => {
+const ProjectCard = ({ title, sortDescription, description, tags }) => {
   return (
     <>
-      <div className="border border-white md:h-40 rounded-md p-3 w-64 sm:w-full sm:h-16 hover:bg-slate-800 duration-500 transition">
-        <h5 className="text-white text-xl sm:text-sm sm:font-semibold">{title}</h5>
+      <div className="border border-white md:h-36 rounded-md p-3 w-64 sm:w-full sm:h-32 hover:bg-slate-800 duration-500 transition">
+        <h5 className="text-white text-xl sm:text-sm sm:font-semibold">
+          {title}
+        </h5>
         <p className="sm:block md:hidden text-white text-sm hidden italic">
-            {sortDescription}
+          {sortDescription}
         </p>
         <p className="text-white text-sm italic  sm:hidden md:block ">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+          {description}
         </p>
+        <ul className="flex flex-wrap gap-2 m-2">
+          {tags.map((tag, index) => (
+            <li key={index} className="text-white border rounded-sm p-0.5 text-sm italic bg-slate-600 opacity-50">
+              {tag}
+            </li>
+          ))}
+        </ul>
       </div>
-
     </>
   );
 };

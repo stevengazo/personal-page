@@ -35,6 +35,8 @@ const Projects = () => {
                   key={index}
                   title={project.fields.projectTitle}
                   sortDescription={project.fields.sortDescription}
+                  description={project.fields.description}
+                  tags={project.fields.tags}
                 />
               ))
             ) : (
