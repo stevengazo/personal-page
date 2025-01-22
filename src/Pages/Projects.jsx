@@ -21,29 +21,25 @@ const Projects = () => {
   return (
     <>
       {/* Full screen height with sticky top position */}
-      <div className="h-screen sticky flex items-center justify-center  bg-teal-950">
-        {/* White text for the heading with 3xl size */}
-        <h2 className="text-white absolute top-6 text-3xl rounded-md">
+      <div className="sm:h-full md:h-screen sticky flex md:items-center justify-center sm:items-start md:gap-0 bg-teal-950  box-content">
+        <h2 className="text-white absolute top-6 text-3xl rounded-md  ">
           Proyectos
         </h2>
-
-        <div className="md:mx-6 md:p-2 flex  sm:flex-col lg:flex-row sm:w-full sm:mx-4 sm:p-5 sm:justify-start md:gap-3 md:w-full md:h-5/6 md:justify-around ">
-          <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:place-items-center lg:place-items-center">
-            {projects && projects.length > 0 ? (
-              projects.map((project, index) => (
-                <ProjectCard
-                  key={index}
-                  title={project.fields.projectTitle}
-                  sortDescription={project.fields.sortDescription}
-                  description={project.fields.description}
-                  tags={project.fields.tags}
-                  gitHub={project.fields.gitHub}
-                />
-              ))
-            ) : (
-              <p>No hay proyectos disponibles.</p> // Manejo de estado vacío
-            )}
-          </div>
+        <div className=" w-full mx-4 p-5 md:justify-around sm:justify-start sm:align-top gap-3 sm:w-fit grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center sm:overflow-y-auto">
+          {projects && projects.length > 0 ? (
+            projects.map((project, index) => (
+              <ProjectCard
+                key={index}
+                title={project.fields.projectTitle}
+                sortDescription={project.fields.sortDescription}
+                description={project.fields.description}
+                tags={project.fields.tags}
+                gitHub={project.fields.gitHub}
+              />
+            ))
+          ) : (
+            <p>No hay proyectos disponibles.</p> // Manejo de estado vacío
+          )}
         </div>
       </div>
     </>
