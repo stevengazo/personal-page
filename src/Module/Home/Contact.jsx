@@ -25,7 +25,7 @@ const Contact = () => {
         <h2 className="text-white absolute top-6 text-3xl">Contact</h2>
 
         {/* Contenedor para las tarjetas de contacto y el formulario */}
-        <div className="flex flex-col gap-4 justify-around w-3/4 mx-auto justify-center items-center sm:flex-col md:flex-col lg:flex-row transition duration-500 ease-in-out">
+        <div className="flex flex-col gap-4 justify-around w-3/4 mx-auto items-center sm:flex-col md:flex-col lg:flex-row transition duration-500 ease-in-out">
           {/* Tarjetas de contacto */}
           <div className="h-full flex flex-col justify-around items-center border rounded-md p-2">
             <h3 className="text-white  text-center my-6 text-xl font-medium">
@@ -68,7 +68,7 @@ const Contact = () => {
             <h3 className="text-2xl font-bold text-cyan-950 mb-4">
               Send me a Message
             </h3>
-            <p className="italic text-white text-gray-500">If you have an idea our need to contact me, send me a message</p>
+            <p className="italic text-gray-500">If you have an idea our need to contact me, send me a message</p>
             <div className="mb-4">
               <label className="block text-cyan-950 font-medium mb-2">
                 Name
