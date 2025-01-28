@@ -9,7 +9,6 @@ const Projects = () => {
       try {
         const response = await client.getEntries({ content_type: "projects" }); // Cambia 'post' por el tipo de contenido que usas en Contentful
         setProjects(response.items);
-        console.log(response.items)
       } catch (error) {
         console.error(error);
       }
@@ -30,7 +29,7 @@ const Projects = () => {
             projects.map((project, index) => (
            
               <ProjectCard
-                id={project.fields.projectId}
+                id={project.sys.id}
                 key={index}
                 title={project.fields.projectTitle}
                 sortDescription={project.fields.sortDescription}

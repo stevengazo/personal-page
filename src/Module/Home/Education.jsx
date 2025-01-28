@@ -6,21 +6,18 @@ const Education = () => {
   const [educations, setEducations] = useState([]);
 
   useEffect(() => {
-    const fetchEducation = async () => {
+    const fetchProjects = async () => {
       try {
-        const response = await client.getEntries({
-          content_type: "Education",
-        });
-        setEducations(response.items);
+        const response = await client.getEntries({ content_type: "education" }); // Cambia 'post' por el tipo de contenido que usas en Contentful
       } catch (error) {
         console.error(error);
       }
     };
 
-    fetchEducation();
+    fetchProjects();
   }, []);
 
-  console.log(educations);
+
 
   return (
     <>
@@ -32,10 +29,7 @@ const Education = () => {
         </h2>
         <div className="flex flex-wrap-reverse justify-center items-center gap-6 p-6 max-w-5xl">
           {/* Dynamic EducationCards with spacing and responsiveness */}
-          <EducationCard />
-          <EducationCard />
-          <EducationCard />
-          <EducationCard />
+
         </div>
       </div>
     </>

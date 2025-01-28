@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Pages/Home.jsx";
 import ProjectView from "./Pages/ProjectView.jsx";
 import NavBarGeneral from "./Components/NavBarGeneral.jsx";
-import ErrorPage from "./Module/Home/ErrorPage.jsx";
+import ErrorPage from "./Pages/ErrorPage.jsx";
 
 function App() {
   return (
