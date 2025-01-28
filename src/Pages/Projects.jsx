@@ -9,6 +9,7 @@ const Projects = () => {
       try {
         const response = await client.getEntries({ content_type: "projects" }); // Cambia 'post' por el tipo de contenido que usas en Contentful
         setProjects(response.items);
+        console.log(response.items)
       } catch (error) {
         console.error(error);
       }
@@ -17,7 +18,6 @@ const Projects = () => {
     fetchProjects();
   }, []);
 
-  console.log(projects);
   return (
     <>
       {/* Full screen height with sticky top position */}
@@ -28,7 +28,9 @@ const Projects = () => {
         <div className=" w-full mx-4 p-5 md:justify-around sm:justify-start sm:align-top gap-3 sm:w-fit grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center sm:overflow-y-auto">
           {projects && projects.length > 0 ? (
             projects.map((project, index) => (
+           
               <ProjectCard
+                id={project.fields.projectId}
                 key={index}
                 title={project.fields.projectTitle}
                 sortDescription={project.fields.sortDescription}

@@ -1,6 +1,27 @@
+import React, { useEffect, useState } from "react";
 import EducationCard from "../Components/EducationCard";
+import client from "../client/contentful";
 
 const Education = () => {
+  const [educations, setEducations] = useState([]);
+
+  useEffect(() => {
+    const fetchEducation = async () => {
+      try {
+        const response = await client.getEntries({
+          content_type: "Education",
+        });
+        setEducations(response.items);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchEducation();
+  }, []);
+
+  console.log(educations);
+
   return (
     <>
       {/* Full screen height with sticky top position */}

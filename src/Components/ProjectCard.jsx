@@ -1,8 +1,10 @@
 import { FaGithub } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
-const ProjectCard = ({ title, sortDescription, description, tags, gitHub }) => {
+const ProjectCard = ({ id ,title, sortDescription, description, tags, gitHub }) => {
+  
   return (
-    <div className="border relative md:h-36 rounded-md p-3 w-full max-w-sm sm:w-full sm:h-32 hover:bg-slate-800 duration-500 transition box-content">
+    <Link to={`/projectview/${id}`} className="border relative md:h-36 rounded-md p-3 w-full max-w-sm sm:w-full sm:h-32 hover:bg-slate-800 duration-500 transition box-content">
       <a href={gitHub} target="_blank" className="absolute top-2 right-2">
         <FaGithub size={20} className="text-white hover:scale-110 duration-300 transition" />
       </a>
@@ -26,7 +28,7 @@ const ProjectCard = ({ title, sortDescription, description, tags, gitHub }) => {
           </li>
         ))}
       </ul>
-    </div>
+    </Link>
   );
 };
 
