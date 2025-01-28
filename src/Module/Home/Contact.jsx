@@ -1,4 +1,4 @@
-import ContactCard from "../Components/ContactCard";
+import ContactCard from "../../Components/ContactCard";
 import {
   FaWhatsapp,
   FaMailBulk,

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import client from "../client/contentful";
-import ProjectCard from "../Components/ProjectCard";
+import client from "../../client/contentful";
+import ProjectCard from "../../Components/ProjectCard";
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);

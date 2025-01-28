@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import EducationCard from "../Components/EducationCard";
-import client from "../client/contentful";
+import EducationCard from "../../Components/EducationCard";
+import client from "../../client/contentful";
 
 const Education = () => {
   const [educations, setEducations] = useState([]);
