@@ -4,10 +4,11 @@ import ProjectCard from "../../Components/ProjectCard";
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
+
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await client.getEntries({ content_type: "projects" }); // Cambia 'post' por el tipo de contenido que usas en Contentful
+        const response = await client.getEntries({ content_type: "projects" });
         setProjects(response.items);
       } catch (error) {
         console.error(error);
@@ -19,15 +20,13 @@ const Projects = () => {
 
   return (
     <>
-      {/* Full screen height with sticky top position */}
-      <div className="sm:h-full md:h-screen sticky flex md:items-center justify-center sm:items-start md:gap-0 bg-teal-950  box-content">
-        <h2 className="text-white absolute top-6 text-3xl rounded-md  ">
-          Proyectos
-        </h2>
-        <div className=" w-full mx-4 p-5 md:justify-around sm:justify-start sm:align-top gap-3 sm:w-fit grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center sm:overflow-y-auto">
-          {projects && projects.length > 0 ? (
+      <div className="sm:h-full md:h-screen sticky top-0 flex flex-col items-center bg-teal-950 p-4">
+        <h2 className="text-white text-3xl mb-4">Proyectos</h2>
+
+        {/* Contenedor de proyectos con scroll si hay muchos */}
+        <div className="w-full max-w-7xl mx-auto p-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-auto">
+          {projects.length > 0 ? (
             projects.map((project, index) => (
-           
               <ProjectCard
                 id={project.sys.id}
                 key={index}
@@ -39,7 +38,7 @@ const Projects = () => {
               />
             ))
           ) : (
-            <p>No hay proyectos disponibles.</p> // Manejo de estado vacío
+            <p className="text-white text-center">No hay proyectos disponibles.</p>
           )}
         </div>
       </div>
