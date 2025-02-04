@@ -1,10 +1,10 @@
 const ContactCard = ({ title, _icon, url, username }) => {
   return (
     <>
-      <div >
-        <a href={url}  className="text-white flex-row flex gap-3 justify-center align-middle">
+      <div  className=" hover:text-gray-600 scale-105 transition duration-500">
+        <a href={url}  className=" flex-row flex gap-3 justify-center items-center">
         {<_icon size={32} />}
-          <h6 className="text-white">{title}</h6>
+          <h6 className="">{title}</h6>
           <h6 className="italic">{username}</h6>
         </a>
       </div>
