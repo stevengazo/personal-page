@@ -61,6 +61,11 @@ const ProjectView = () => {
                 </li>
               ))}
             </ul>
+           {
+             project &&  <a className="text-white italic text-sm font-light hover:font-normal transition duration-700" target="_blank"  href={project.fields.gitHub}>
+            Code to the repository
+          </a>
+           }
           </>
         )}
       </div>
