@@ -1,20 +1,34 @@
 import { useState } from "react";
-import { ThemeProvider } from "@mui/material";
-import { Element } from "react-scroll";
+import { duration, ThemeProvider } from "@mui/material";
+import { Element, animateScroll } from "react-scroll";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import NavBar from "./Components/NavBar.jsx";
-import Hero from "./Components/Hero.jsx";
-import Projects from "./Components/Projects.jsx";
-import Education from "./Components/Education.jsx";
+import Home from "./Pages/Home.jsx";
+import ProjectView from "./Pages/ProjectView.jsx";
+import NavBarGeneral from "./Components/NavBarGeneral.jsx";
+import ErrorPage from "./Pages/ErrorPage.jsx";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
-      <div>
-          <Hero />
-      </div>
+      <Router>
+        <Routes>
+          {/* Ruta principal (Single Page) */}
+          <Route path="/" element={<Home />} />
+
+          {/* Ruta para la vista detallada de un proyecto */}
+          <Route
+            path="/projectview/:id"
+            element={
+              <>
+                <NavBarGeneral />
+                <ProjectView />
+              </>
+            }
+          />
+          <Route path="*" element={<ErrorPage />} />
+        </Routes>
+      </Router>
     </>
   );
 }
