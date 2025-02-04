@@ -1,28 +1,39 @@
+import { useState } from "react";
 import ContactCard from "../../Components/ContactCard";
-import {
-  FaWhatsapp,
-  FaMailBulk,
-  FaLinkedin,
-  FaGithub,
-} from "react-icons/fa";
+import { FaWhatsapp, FaMailBulk, FaLinkedin, FaGithub } from "react-icons/fa";
 
 const Contact = () => {
-  const handleSubmit = (e) => {
+  const [message, setMessage] = useState("");
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
-    console.log(data);
-    alert("Consulta enviada correctamente.");
+
+    try {
+      const response = await fetch("https://formspree.io/f/mwpvbzzp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        setMessage("Consulta enviada correctamente.");
+        e.target.reset();
+      } else {
+        setMessage("Hubo un error al enviar el formulario. Inténtalo de nuevo.");
+      }
+    } catch (error) {
+      setMessage("Error de conexión. Inténtalo más tarde.");
+    }
   };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-cyan-950 p-8">
-      {/* Header */}
       <h2 className="text-white text-4xl font-bold mb-8">Contact</h2>
-
-      {/* Container */}
       <div className="w-full max-w-4xl grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Contact Links */}
         <div className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center">
           <h3 className="text-cyan-950 text-2xl font-bold mb-6">Contact Links</h3>
           <ul className="w-full space-y-4">
@@ -32,8 +43,6 @@ const Contact = () => {
             <ContactCard title="GitHub" _icon={FaGithub} url="https://github.com/stevengazo" username="stevengazo" />
           </ul>
         </div>
-
-        {/* Contact Form */}
         <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md w-full">
           <h3 className="text-cyan-950 text-2xl font-bold mb-4">Send me a Message</h3>
           <p className="italic text-gray-500 mb-4">If you have an idea or need to contact me, send me a message.</p>
@@ -52,6 +61,7 @@ const Contact = () => {
           <button type="submit" className="w-full bg-cyan-950 text-white p-2 rounded-lg hover:bg-cyan-900 transition-colors">
             Send
           </button>
+          {message && <p className="text-green-600 mt-4 text-center">{message}</p>}
         </form>
       </div>
     </div>
