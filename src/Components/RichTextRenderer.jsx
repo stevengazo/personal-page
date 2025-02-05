@@ -41,6 +41,17 @@ const RichTextRenderer = ({ richText }) => {
           />
         );
       },
+
+      // Manejar listas (ordenadas y desordenadas)
+      [BLOCKS.UL_LIST]: (node, children) => (
+        <ul className="list-disc pl-5 mb-4">{children}</ul>
+      ),
+      [BLOCKS.OL_LIST]: (node, children) => (
+        <ol className="list-decimal pl-5 mb-4">{children}</ol>
+      ),
+      [BLOCKS.LIST_ITEM]: (node, children) => (
+        <li className="mb-2">{children}</li>
+      ),
     },
   };
 
