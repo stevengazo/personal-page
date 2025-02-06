@@ -1,6 +1,6 @@
-import React from 'react';
-import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
-import { BLOCKS } from '@contentful/rich-text-types';
+import React from "react";
+import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
+import { BLOCKS } from "@contentful/rich-text-types";
 
 const RichTextRenderer = ({ richText }) => {
   const options = {
@@ -37,7 +37,7 @@ const RichTextRenderer = ({ richText }) => {
           <img
             src={file.url}
             alt={description || title}
-            className="my-6 rounded-lg shadow-md w-full max-w-2xl mx-auto"
+               className="my-6 rounded-lg max-w-md mx-auto"
           />
         );
       },
@@ -55,7 +55,11 @@ const RichTextRenderer = ({ richText }) => {
     },
   };
 
-  return <div className="prose max-w-2xl mx-auto">{documentToReactComponents(richText, options)}</div>;
+  return (
+    <div className="prose max-w-2xl mx-auto">
+      {documentToReactComponents(richText, options)}
+    </div>
+  );
 };
 
 export default RichTextRenderer;
