@@ -24,7 +24,7 @@ const Projects = () => {
         <h2 className="text-white text-3xl mb-4">Proyectos</h2>
 
         {/* Contenedor de proyectos con scroll si hay muchos */}
-        <div className="w-full max-w-7xl mx-auto p-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-auto">
+        <div className="w-full  p-5 grid grid-cols-1 m md:grid-cols-2 lg:grid-cols-3 gap-3 ">
           {projects.length > 0 ? (
             projects.map((project, index) => (
               <ProjectCard
