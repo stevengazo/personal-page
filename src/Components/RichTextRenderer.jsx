@@ -35,10 +35,13 @@ const RichTextRenderer = ({ richText }) => {
         const { title, description, file } = node.data.target.fields;
         return (
           <img
-            src={file.url}
-            alt={description || title}
-               className="my-6 rounded-lg max-w-md mx-auto"
-          />
+          src={file.url}
+         
+          sizes="(max-width: 600px) 480px, 800px"
+          alt={description || title}
+          className="my-6 rounded-lg max-w-full md:max-w-md mx-auto"
+          loading="lazy"
+        />
         );
       },
 

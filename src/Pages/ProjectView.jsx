@@ -80,7 +80,7 @@ const ProjectView = () => {
             </ul>
 
             {project && (
-              <div className="text-white w-90 px-8 mb-8 rounded-lg border border-white">
+              <div className="text-white sm:w-full md:w-90 px-8 mb-8 rounded-lg ">
                 <RichTextRendered richText={project.fields.full} />
               </div>
             )}
