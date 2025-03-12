@@ -10,13 +10,11 @@ const ProjectCard = ({
   gitHub,
 }) => {
   return (
-    <div className="border rounded sm:my-5 md:my-0 sm:h-5/6 md:h-full border-white md:justify-center md:align-middle">
+    <div className="border rounded hover:border-gray-500 transition duration-300 sm:my-5 md:my-0 sm:h-5/6 md:h-full border-white md:justify-center md:align-middle">
       <Link
         to={`/projectview/${id}`}
         className="flex flex-col justify-center items-center p-4 h-full"
       >
-
-   
         <h5 className="text-white text-3xl sm:text-sm sm:font-semibold">
           {title}
         </h5>
