@@ -24,21 +24,24 @@ const Projects = () => {
         <h2 className="text-white text-3xl mb-4">Proyectos</h2>
 
         {/* Contenedor de proyectos con scroll si hay muchos */}
-        <div className="w-full  p-5 grid grid-cols-1 m md:grid-cols-2 lg:grid-cols-3 gap-3 ">
+        <div className="w-full h-2/4 p-4 md:grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4  lg:place-items-center sm:gap-10 md:gap-7">
           {projects.length > 0 ? (
             projects.map((project, index) => (
-              <ProjectCard
-                id={project.sys.id}
-                key={index}
-                title={project.fields.projectTitle}
-                sortDescription={project.fields.sortDescription}
-                description={project.fields.description}
-                tags={project.fields.tags}
-                gitHub={project.fields.gitHub}
-              />
+              <div key={index} className="w-full">
+                <ProjectCard
+                  id={project.sys.id}
+                  title={project.fields.projectTitle}
+                  sortDescription={project.fields.sortDescription}
+                  description={project.fields.description}
+                  tags={project.fields.tags}
+                  gitHub={project.fields.gitHub}
+                />
+              </div>
             ))
           ) : (
-            <p className="text-white text-center">No hay proyectos disponibles.</p>
+            <p className="text-white text-center col-span-full">
+              No hay proyectos disponibles.
+            </p>
           )}
         </div>
       </div>
