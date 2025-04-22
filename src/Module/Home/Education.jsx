@@ -1,52 +1,66 @@
 import React, { useEffect, useState } from "react";
 import EducationCard from "../../Components/EducationCard";
+// import CourseCard from "../../Components/CourseCard"; // ← lo incluirás cuando lo tengas listo
 import client from "../../client/contentful";
 
 const Education = () => {
   const [educations, setEducations] = useState([]);
+  const [courses, setCourses] = useState([]); // ← si luego decides traerlos de Contentful
 
   useEffect(() => {
-    const fetchProjects = async () => {
+    const fetchEducations = async () => {
       try {
-        const response = await client.getEntries({ content_type: "education" }); // Cambia 'post' por el tipo de contenido que usas en Contentful
-        setEducations(response.items);
+        const response = await client.getEntries({ content_type: "education" });
+        const sorted = response.items.sort((a, b) => {
+          const dateA = new Date(a.fields.dateStart);
+          const dateB = new Date(b.fields.dateStart);
+          return dateB - dateA;
+        });
+        setEducations(sorted);
       } catch (error) {
-        console.error(error);
+        console.error("Error al cargar educación:", error);
       }
     };
 
-    fetchProjects();
+    fetchEducations();
   }, []);
 
   return (
-    <>
-      {/* Full screen height with sticky top position */}
-      <div className="h-screen sticky top-0 flex flex-col items-center justify-center bg-neutral-900">
-        {/* White text for the heading with 3xl size and additional spacing */}
-        <h2 className="absolute top-6 text-white text-3xl font-bold tracking-wide">
-          Education
-        </h2>
-        <div className="flex flex-wrap-reverse justify-center items-center w-full gap-6 p-6 max-w-5xl">
-          {/* Dynamic EducationCards with spacing and responsiveness */}
-          {educations && educations.length > 0 ? (
+    <div className="min-h-screen flex flex-col items-center justify-center bg-neutral-900 px-4 py-16 space-y-24">
+      {/* Educación Section */}
+      <section className="w-full max-w-5xl text-center">
+        <h2 className="text-white text-4xl font-bold mb-8">Educación</h2>
+        <div className="flex flex-wrap justify-center gap-6">
+          {educations.length > 0 ? (
             educations.map((edu, ind) => {
+              const { title, description, school, dateStart, dateEnd } = edu.fields;
               return (
                 <EducationCard
                   key={ind}
-                  title={edu.fields.title}
-                  description={edu.fields.description}
-                  school={edu.fields.school}
-                  dateStart={edu.fields.dateStart}
-                  dateEnd={edu.fields.dateEnd}
+                  title={title}
+                  description={description}
+                  school={school}
+                  dateStart={dateStart}
+                  dateEnd={dateEnd}
                 />
               );
             })
           ) : (
-            <p>No</p>
+            <p className="text-white">No hay información educativa disponible.</p>
           )}
         </div>
-      </div>
-    </>
+      </section>
+
+      {/* Cursos Section */}
+      <section className="w-full max-w-5xl text-center">
+        <h2 className="text-white text-4xl font-bold mb-8">Cursos</h2>
+        <div className="flex flex-wrap justify-center gap-6">
+          {/* Aquí irán tus CourseCard en el futuro */}
+          {/* Por ahora, solo mostramos un mensaje temporal */}
+          <p className="text-white italic opacity-70">Próximamente se agregarán los cursos...</p>
+        </div>
+      </section>
+    </div>
   );
 };
 
