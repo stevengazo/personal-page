@@ -50,7 +50,7 @@ const Hero = () => {
 
       <footer className="mt-10 flex flex-col items-center gap-4">
         <p className="text-sm font-extralight text-gray-300">
-          Página en construcción, ¡vuelve pronto!
+          
         </p>
         <PacmanLoader color="yellow" />
       </footer>

@@ -8,17 +8,19 @@ const EducationCard = ({ title, school, description, dateStart, dateEnd }) => {
   };
 
   return (
-    <div className="bg-slate-800 p-6 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 text-white">
+    <div className="border border-slate-800 p-6 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 text-white">
       <div className="flex flex-col gap-2">
         <div className="flex justify-between items-start">
-          <h3 className="text-xl font-semibold">{title}</h3>
+          <div>
+            <h3 className="text-xl font-semibold">{title}</h3>
+            <h6 className="text-sm text-start text-gray-300 italic">
+              {school}
+            </h6>
+          </div>
           <span className="text-sm text-gray-400 italic whitespace-nowrap">
             {formatDate(dateStart)} – {formatDate(dateEnd)}
           </span>
         </div>
-
-        <div className="text-sm text-gray-300 italic">{school}</div>
-
         {description && (
           <p className="text-sm text-gray-200 leading-relaxed mt-2">
             {description}
