@@ -1,42 +1,49 @@
 import { FaGithub } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-const ProjectCard = ({ id, title, sortDescription, description, tags, gitHub }) => {
+const ProjectCard = ({ id, title, sortDescription, description, tags = [], gitHub }) => {
   return (
-    <div className="border border-white rounded-md hover:border-gray-400 transition-all duration-300 shadow-sm hover:shadow-md bg-opacity-10 backdrop-blur-sm">
-      <Link
-        to={`/projectview/${id}`}
-        className="flex flex-col justify-between h-full p-6 gap-4 hover:bg-gray-800/10 transition-colors duration-300"
-      >
-        <div>
-          <h5 className="text-white text-xl md:text-2xl font-semibold mb-2 text-center">
+    <div className="group relative border border-slate-700/70 bg-slate-800/60 rounded-2xl p-6 shadow-md hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-300 backdrop-blur-sm overflow-hidden">
+      {/* Efecto de brillo al hacer hover */}
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+      <Link to={`/projectview/${id}`} className="relative flex flex-col justify-between h-full z-10">
+        {/* Header */}
+        <div className="mb-3">
+          <h3 className="text-lg md:text-xl font-semibold text-white text-center group-hover:text-blue-400 transition-colors">
             {title}
-          </h5>
-          <p className="text-white text-sm italic md:hidden">{sortDescription}</p>
-          <p className="text-white text-sm italic hidden md:block">{description}</p>
+          </h3>
+          <p className="text-gray-300 text-sm italic text-center mt-2 leading-relaxed">
+            <span className="block md:hidden">{sortDescription}</span>
+            <span className="hidden md:block">{description}</span>
+          </p>
         </div>
 
-        <ul className="flex flex-wrap gap-2 mt-4 justify-center">
-          {tags.map((tag, index) => (
-            <li
-              key={index}
-              className="text-white text-xs bg-slate-700 rounded px-2 py-0.5 italic opacity-70 truncate max-w-full"
-            >
-              {tag}
-            </li>
-          ))}
-        </ul>
+        {/* Tags */}
+        {tags.length > 0 && (
+          <ul className="flex flex-wrap justify-center gap-2 mt-3">
+            {tags.map((tag, index) => (
+              <li
+                key={index}
+                className="px-2 py-1 text-xs bg-slate-700/80 text-gray-200 rounded-full italic hover:bg-slate-600/80 transition-colors truncate"
+              >
+                {tag}
+              </li>
+            ))}
+          </ul>
+        )}
 
+        {/* GitHub link */}
         {gitHub && (
           <div className="flex justify-center mt-4">
             <a
               href={gitHub}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white hover:text-gray-300 transition"
-              title="View on GitHub"
+              title="Ver en GitHub"
+              className="text-gray-300 hover:text-blue-400 transition-transform duration-300 hover:scale-110"
             >
-              <FaGithub size={24} />
+              <FaGithub size={26} />
             </a>
           </div>
         )}

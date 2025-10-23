@@ -13,9 +13,7 @@ const Contact = () => {
     try {
       const response = await fetch("https://formspree.io/f/mwpvbzzp", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
 
@@ -31,10 +29,22 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-cyan-950 p-8 mb-8">
-      <h2 className="text-white text-4xl font-bold mb-8">Contact</h2>
-      <div className="w-full max-w-4xl grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center">
+    <section className="w-full min-h-screen relative flex flex-col items-center justify-center px-8 py-16
+      bg-gradient-to-b from-cyan-950 via-teal-950 to-black overflow-hidden"
+    >
+      {/* Fondos decorativos sutiles */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute w-72 h-72 bg-cyan-800/20 rounded-full top-[-50px] left-[-50px] animate-pulse-slow" />
+        <div className="absolute w-96 h-96 bg-teal-800/20 rounded-full bottom-[-100px] right-[-100px] animate-pulse-slow" />
+      </div>
+
+      <h2 className="relative z-10 text-4xl md:text-5xl font-bold mb-12 text-center border-b border-slate-700 pb-2 text-white">
+        Contact
+      </h2>
+
+      <div className="relative z-10 w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Contact Links */}
+        <div className="bg-white p-6 rounded-2xl shadow-lg flex flex-col items-center">
           <h3 className="text-cyan-950 text-2xl font-bold mb-6">Contact Links</h3>
           <ul className="w-full space-y-4">
             <ContactCard title="Whatsapp" _icon={FaWhatsapp} url="https://wa.me/86279806" username="stevengazo" />
@@ -43,28 +53,43 @@ const Contact = () => {
             <ContactCard title="GitHub" _icon={FaGithub} url="https://github.com/stevengazo" username="stevengazo" />
           </ul>
         </div>
-        <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md w-full">
+
+        {/* Contact Form */}
+        <form onSubmit={handleSubmit} className="bg-white p-6 rounded-2xl shadow-lg w-full flex flex-col">
           <h3 className="text-cyan-950 text-2xl font-bold mb-4">Send me a Message</h3>
-          <p className="italic text-gray-500 mb-4">If you have an idea or need to contact me, send me a message.</p>
+          <p className="italic text-gray-500 mb-6">
+            If you have an idea or need to contact me, send me a message.
+          </p>
+
           <div className="mb-4">
             <label className="block text-cyan-950 font-medium mb-2">Name</label>
-            <input type="text" name="name" required className="w-full p-2 border border-gray-300 rounded-lg" placeholder="Your Name" />
+            <input type="text" name="name" required placeholder="Your Name" 
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-400 transition" 
+            />
           </div>
+
           <div className="mb-4">
             <label className="block text-cyan-950 font-medium mb-2">Email</label>
-            <input type="email" name="email" required className="w-full p-2 border border-gray-300 rounded-lg" placeholder="Your email" />
+            <input type="email" name="email" required placeholder="Your Email" 
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-400 transition" 
+            />
           </div>
+
           <div className="mb-4">
             <label className="block text-cyan-950 font-medium mb-2">Message</label>
-            <textarea name="message" required className="w-full p-2 border border-gray-300 rounded-lg" rows="4" placeholder="Write your message here"></textarea>
+            <textarea name="message" required rows="5" placeholder="Write your message here"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-400 transition"
+            ></textarea>
           </div>
-          <button type="submit" className="w-full bg-cyan-950 text-white p-2 rounded-lg hover:bg-cyan-900 transition-colors">
+
+          <button type="submit" className="w-full bg-cyan-950 text-white p-3 rounded-lg hover:bg-cyan-900 transition-colors">
             Send
           </button>
+
           {message && <p className="text-green-600 mt-4 text-center">{message}</p>}
         </form>
       </div>
-    </div>
+    </section>
   );
 };
 

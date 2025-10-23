@@ -1,24 +1,35 @@
 import { Link } from "react-scroll";
 
-
 const NavBar = () => {
+  const navItems = [
+    { id: "Hero", label: "Home" },
+    { id: "Education", label: "Education" },
+    { id: "Projects", label: "Projects" },
+    { id: "Contacts", label: "Contact" },
+  ];
+
   return (
-    <div className=" fixed bottom-0 z-20 h-16 w-full flex justify-center  items-center bg-slate-950">
-      <ul className="text-white font-light flex flex-row gap-8">
-        <Link to="Hero" smooth duration={500} className="hover:font-semibold hover:scale-105 cursor-pointer hover:text-blue-400 hover:mx-4 transition-all duration-750">
-          Home
-        </Link>
-        <Link to="Education" smooth duration={500} className="hover:font-semibold hover:scale-105 cursor-pointer hover:text-blue-400  hover:mx-4 transition-all duration-750">
-          Education
-        </Link>
-        <Link to="Projects" smooth duration={500} className="hover:font-semibold hover:scale-105 cursor-pointer hover:text-blue-400  hover:mx-4 transition-all duration-750">
-          Projects
-        </Link>
-        <Link to="Contacts" smooth duration={500}  className="hover:font-semibold hover:scale-105 cursor-pointer hover:text-blue-400  hover:mx-4 transition-all duration-750">
-          Contact
-        </Link>
+    <nav className="fixed bottom-0 z-50 w-full bg-slate-950/90 backdrop-blur-sm border-t border-slate-800 shadow-lg">
+      <ul className="flex justify-center items-center gap-6 sm:gap-10 h-16 text-white text-sm font-light tracking-wide">
+        {navItems.map(({ id, label }) => (
+          <li key={id}>
+            <Link
+              to={id}
+              smooth
+              duration={500}
+              spy
+              offset={-50}
+              activeClass="text-blue-400 font-semibold after:w-full"
+              className="relative cursor-pointer transition-all duration-300 hover:text-blue-400 hover:font-semibold"
+            >
+              <span className="relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-blue-400 after:transition-all after:duration-300 hover:after:w-full">
+                {label}
+              </span>
+            </Link>
+          </li>
+        ))}
       </ul>
-    </div>
+    </nav>
   );
 };
 

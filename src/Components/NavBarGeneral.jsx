@@ -1,25 +1,39 @@
+import { Link, useLocation } from "react-router-dom";
 
-import { Link } from "react-router-dom";
+const NavBarGeneral = () => {
+  const location = useLocation();
 
-const NavBarGeneral = ()=>{
-    return<>
-    <div className=" fixed bottom-0 z-20 h-16 w-full flex justify-center  items-center bg-slate-950">
-      <ul className="text-white font-light flex flex-row gap-8">
-        <Link to="/" smooth duration={500} className="hover:font-semibold hover:scale-105 cursor-pointer hover:text-blue-400 hover:mx-4 transition-all duration-750">
-          Home
-        </Link>
-        <Link to="/" smooth duration={500} className="hover:font-semibold hover:scale-105 cursor-pointer hover:text-blue-400  hover:mx-4 transition-all duration-750">
-          Education
-        </Link>
-        <Link to="/" smooth duration={500} className="hover:font-semibold hover:scale-105 cursor-pointer hover:text-blue-400  hover:mx-4 transition-all duration-750">
-          Projects
-        </Link>
-        <Link to="/" smooth duration={500}  className="hover:font-semibold hover:scale-105 cursor-pointer hover:text-blue-400  hover:mx-4 transition-all duration-750">
-          Contact
-        </Link>
+  const links = [
+    { path: "/", label: "Home" },
+    { path: "/", label: "Education" },
+    { path: "/", label: "Projects" },
+    { path: "/", label: "Contact" },
+  ];
+
+  return (
+    <nav className="fixed bottom-0 z-20 w-full h-16 bg-slate-950/90 backdrop-blur-md border-t border-slate-800">
+      <ul className="flex justify-center items-center h-full gap-8 text-white font-light">
+        {links.map(({ path, label }) => {
+          const isActive = location.pathname === path;
+          return (
+            <li key={path}>
+              <Link
+                to={path}
+                className={`relative px-2 text-sm md:text-base transition-all duration-300
+                  ${isActive ? "text-blue-400 font-medium" : "hover:text-blue-400 hover:scale-105"}
+                `}
+              >
+                {label}
+                {isActive && (
+                  <span className="absolute left-0 right-0 -bottom-1 mx-auto w-2 h-1 bg-blue-400 rounded-full" />
+                )}
+              </Link>
+            </li>
+          );
+        })}
       </ul>
-    </div>
-    </>
-}
+    </nav>
+  );
+};
 
 export default NavBarGeneral;

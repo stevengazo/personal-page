@@ -15,7 +15,7 @@ const Home = () => {
   });
 
   return (
-    <>
+    <div className="h-fit">
       <NavBar />
       <Element name="Hero">
         <Hero />
@@ -29,7 +29,7 @@ const Home = () => {
       <Element name="Contacts">
         <Contact />
       </Element>
-    </>
+    </div>
   );
 };
 
