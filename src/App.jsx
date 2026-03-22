@@ -1,35 +1,30 @@
-import { useState } from "react";
-import { duration, ThemeProvider } from "@mui/material";
-import { Element, animateScroll } from "react-scroll";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Home from "./Pages/Home.jsx";
 import ProjectView from "./Pages/ProjectView.jsx";
-import NavBarGeneral from "./Components/NavBarGeneral.jsx";
 import ErrorPage from "./Pages/ErrorPage.jsx";
+import Projects from "./Pages/ProjectsPage.jsx";
+import MainLayout from "./Module/MainLayout.jsx";
+import EducationPage from "./Pages/EducationPage.jsx";
+import ContactPage from "./Pages/ContactPage.jsx";
 
 function App() {
   return (
-    <>
-      <Router>
-        <Routes>
-          {/* Ruta principal (Single Page) */}
+    <Router>
+      <Routes>
+        {/* 🔥 Layout global */}
+        <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/projectview/:id" element={<ProjectView />} />
+          <Route path="/education" element={<EducationPage />} />
+          <Route path="/contacts" element={ <ContactPage /> } />
+        </Route>
 
-          {/* Ruta para la vista detallada de un proyecto */}
-          <Route
-            path="/projectview/:id"
-            element={
-              <>
-                <NavBarGeneral />
-                <ProjectView />
-              </>
-            }
-          />
-          <Route path="*" element={<ErrorPage />} />
-        </Routes>
-      </Router>
-    </>
+        {/* ❌ fuera del layout */}
+        <Route path="*" element={<ErrorPage />} />
+      </Routes>
+    </Router>
   );
 }
 

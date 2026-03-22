@@ -1,35 +1,50 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { Element, animateScroll } from "react-scroll";
+import { motion } from "framer-motion";
 
-import NavBar from "../Components/NavBar.jsx";
 import Hero from "../Module/Home/Hero.jsx";
-import Projects from "../Module/Home/Projects.jsx";
-import Education from "../Module/Home/Education.jsx";
-import Contact from "../Module/Home/Contact.jsx";
+
+const sections = [
+  { id: "hero", component: Hero },
+];
+
+// 🔥 Variantes
+const sectionVariants = {
+  hidden: { opacity: 0, y: 60 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.7,
+      ease: "easeOut",
+    },
+  },
+};
 
 const Home = () => {
-  const [count, setCount] = useState(0);
-  animateScroll.scrollToTop({
-    duration: 500,
-    smooth: true,
-  });
+  useEffect(() => {
+    animateScroll.scrollToTop({
+      duration: 400,
+      smooth: "easeInOutQuad",
+    });
+  }, []);
 
   return (
-    <div className="h-fit">
-      <NavBar />
-      <Element name="Hero">
-        <Hero />
-      </Element>
-      <Element name="Education">
-        <Education />
-      </Element>
-      <Element name="Projects">
-        <Projects />
-      </Element>
-      <Element name="Contacts">
-        <Contact />
-      </Element>
-    </div>
+    <main className="snap-y snap-mandatory scroll-smooth">
+      {sections.map(({ id, component: Component }) => (
+        <Element key={id} name={id}>
+          <motion.section
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.4 }}
+            className="snap-start min-h-screen flex items-center justify-center "
+          >
+            <Component />
+          </motion.section>
+        </Element>
+      ))}
+    </main>
   );
 };
 
