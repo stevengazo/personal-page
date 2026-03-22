@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
+import Clarity from "@microsoft/clarity";
 import Home from "./Pages/Home.jsx";
 import ProjectView from "./Pages/ProjectView.jsx";
 import ErrorPage from "./Pages/ErrorPage.jsx";
@@ -9,6 +9,9 @@ import EducationPage from "./Pages/EducationPage.jsx";
 import ContactPage from "./Pages/ContactPage.jsx";
 
 function App() {
+  const ProjectId = 'vzid9t6gtm'
+
+  Clarity.init(ProjectId)
   return (
     <Router>
       <Routes>
