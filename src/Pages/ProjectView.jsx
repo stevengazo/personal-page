@@ -29,19 +29,16 @@ const ProjectView = () => {
 
   if (loading) {
     return (
-      <div className="h-screen w-screen flex flex-col justify-center items-center bg-gradient-to-br from-slate-800 via-slate-900 to-black gap-4 relative overflow-hidden">
+      <div className=" w-full flex flex-col justify-center items-center gap-4 relative overflow-hidden">
         <RotateLoader size={36} color="#FACC15" />
         <p className="text-white italic font-light animate-pulse">Cargando...</p>
-        {/* Difuminados animados */}
-        <div className="absolute w-72 h-72 bg-indigo-800/20 rounded-full top-[-50px] left-[-50px] animate-pulse-slow" />
-        <div className="absolute w-96 h-96 bg-indigo-700/20 rounded-full bottom-[-100px] right-[-100px] animate-pulse-slow" />
       </div>
     );
   }
 
   if (!project) {
     return (
-      <div className="h-screen w-screen flex items-center justify-center bg-gradient-to-br from-slate-800 via-slate-900 to-black text-white relative overflow-hidden">
+      <div className=" w-fit flex items-center justify-center  text-white relative overflow-hidden">
         <p className="text-lg">No se encontró el proyecto.</p>
       </div>
     );
@@ -50,16 +47,9 @@ const ProjectView = () => {
   const { projectTitle, description, gitHub, tags, full } = project.fields;
 
   return (
-    <div className="min-h-screen w-screen flex flex-col items-center py-10 overflow-y-auto relative
-      bg-gradient-to-br from-slate-800 via-slate-900 to-black"
+    <div className=" w-full flex flex-col items-center py-10 overflow-y-auto relative
+      "
     >
-      {/* Difuminados de fondo */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        <div className="absolute w-80 h-80 bg-indigo-800/20 rounded-full top-[-60px] left-[-60px] animate-pulse-slow" />
-        <div className="absolute w-96 h-96 bg-indigo-700/20 rounded-full bottom-[-120px] right-[-120px] animate-pulse-slow" />
-        <div className="absolute w-96 h-96 bg-indigo-900/10 rounded-full top-[25%] left-[60%] animate-bounce-slow" />
-        <div className="absolute w-72 h-72 bg-indigo-800/10 rounded-full bottom-[15%] right-[25%] animate-bounce-slow" />
-      </div>
 
       {/* Contenido */}
       <header className="flex flex-col md:flex-row items-center justify-center gap-3 px-6 mb-6 relative z-10">
