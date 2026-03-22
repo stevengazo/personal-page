@@ -61,18 +61,16 @@ const ProjectsPage = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-teal-900 via-teal-950 to-black relative overflow-hidden">
+      <div className="flex items-center justify-center min-h-screen   overflow-hidden">
         <RotateLoader color="#FACC15" size={36} />
 
-        <div className="absolute w-72 h-72 bg-teal-800/20 rounded-full top-[-50px] left-[-50px] animate-pulse-slow" />
-        <div className="absolute w-96 h-96 bg-teal-700/20 rounded-full bottom-[-100px] right-[-100px] animate-pulse-slow" />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-teal-900 via-teal-950 to-black">
+      <div className="flex items-center justify-center min-h-screen">
         <p className="text-red-400 text-lg">{error}</p>
       </div>
     );
@@ -82,16 +80,10 @@ const ProjectsPage = () => {
     <motion.section
       initial="hidden"
       animate="visible"
-      className="w-full min-h-screen relative text-white px-6 py-16 flex flex-col items-center
-      bg-gradient-to-br from-teal-900 via-teal-950 to-black overflow-hidden"
+      className="w-full min-h-screen relative  text-white px-6 py-16 flex flex-col items-center
+       to-black overflow-hidden"
     >
-      {/* Fondos */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute w-72 h-72 bg-teal-800/20 rounded-full top-[-50px] left-[-50px] animate-pulse-slow" />
-        <div className="absolute w-96 h-96 bg-teal-700/20 rounded-full bottom-[-100px] right-[-100px] animate-pulse-slow" />
-        <div className="absolute w-80 h-80 bg-teal-900/10 rounded-full top-[20%] left-[50%] animate-bounce-slow" />
-        <div className="absolute w-64 h-64 bg-teal-800/10 rounded-full bottom-[10%] right-[30%] animate-bounce-slow" />
-      </div>
+ 
 
       {/* Título animado */}
       <motion.h2

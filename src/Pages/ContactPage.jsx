@@ -62,14 +62,9 @@ const ContactPage = () => {
       whileInView="visible"
       viewport={{ once: true, amount: 0.3 }}
       className="w-full min-h-screen relative flex flex-col items-center justify-center px-8 py-16
-      bg-gradient-to-b from-cyan-950 via-teal-950 to-black overflow-hidden"
+       overflow-hidden"
     >
-      {/* Fondos */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute w-72 h-72 bg-cyan-800/20 rounded-full top-[-50px] left-[-50px] animate-pulse-slow" />
-        <div className="absolute w-96 h-96 bg-teal-800/20 rounded-full bottom-[-100px] right-[-100px] animate-pulse-slow" />
-      </div>
-
+     
       {/* Título */}
       <motion.h2
         variants={titleVariants}
