@@ -1,203 +1,242 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
+import { FaWhatsapp, FaEnvelope, FaLinkedin, FaGithub } from "react-icons/fa";
+import Seo from "../Components/Seo";
 import ContactCard from "../Components/ContactCard";
-import { FaWhatsapp, FaMailBulk, FaLinkedin, FaGithub } from "react-icons/fa";
+import PageHeader from "../Components/PageHeader";
+import { site, routes, credentials } from "../../site.config.mjs";
+
+const meta = routes.find((route) => route.path === "/contacts");
+const FORMSPREE_ID = credentials.formspreeId;
 
 const containerVariants = {
   hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.2,
-    },
-  },
+  visible: { transition: { staggerChildren: 0.12 } },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: "easeOut" },
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" } },
+};
+
+const channels = [
+  { title: "WhatsApp", icon: FaWhatsapp, url: site.social.whatsapp, user: "+506 8627 9806" },
+  { title: "LinkedIn", icon: FaLinkedin, url: site.social.linkedin, user: "stevengazo" },
+  { title: "Correo", icon: FaEnvelope, url: `mailto:${site.social.email}`, user: site.social.email },
+  { title: "GitHub", icon: FaGithub, url: site.social.github, user: "stevengazo" },
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  url: `${site.url}/contacts`,
+  name: meta.title,
+  description: meta.description,
+  inLanguage: "es",
+  mainEntity: {
+    "@id": `${site.url}/#person`,
+    "@type": "Person",
+    email: `mailto:${site.social.email}`,
+    sameAs: [site.social.github, site.social.linkedin],
   },
 };
 
-const titleVariants = {
-  hidden: { opacity: 0, y: -30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6 },
-  },
-};
+const labelClasses = "mb-2 block text-sm font-medium text-slate-200";
+
+const fieldClasses =
+  "w-full rounded-xl border border-slate-700 bg-slate-900/60 p-3 text-white outline-none transition " +
+  "placeholder:text-slate-500 focus:border-cyan-400 focus:bg-slate-900";
+
+const cardClasses =
+  "flex flex-col rounded-2xl border border-slate-700/60 bg-slate-800/40 p-6 backdrop-blur-sm sm:p-8";
 
 const ContactPage = () => {
-  const [message, setMessage] = useState("");
+  // "idle" | "sending" | "success" | "error"
+  const [status, setStatus] = useState("idle");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (status === "sending") return;
+
+    const form = event.target;
+    const data = Object.fromEntries(new FormData(form));
+
+    // Trampa antispam: los bots rellenan todos los campos, las personas no ven
+    // este porque esta oculto. Si viene con contenido, se descarta en silencio.
+    if (data.company) {
+      setStatus("success");
+      form.reset();
+      return;
+    }
+
+    setStatus("sending");
 
     try {
-      const response = await fetch("https://formspree.io/f/mwpvbzzp", {
+      const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          // Sin esto Formspree responde con una redireccion HTML en vez de JSON.
+          Accept: "application/json",
+        },
         body: JSON.stringify(data),
       });
 
       if (response.ok) {
-        setMessage("Consulta enviada correctamente.");
-        e.target.reset();
+        setStatus("success");
+        form.reset();
       } else {
-        setMessage("Hubo un error al enviar el formulario.");
+        setStatus("error");
       }
     } catch {
-      setMessage("Error de conexión.");
+      setStatus("error");
     }
   };
 
   return (
-    <motion.section
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.3 }}
-      className="w-full min-h-screen relative flex flex-col items-center justify-center px-8 py-16
-       overflow-hidden"
-    >
-     
-      {/* Título */}
-      <motion.h2
-        variants={titleVariants}
-        className="relative z-10 text-4xl md:text-5xl font-bold mb-12 text-center border-b border-slate-700 pb-2 text-white"
-      >
-        Contact
-      </motion.h2>
+    <>
+      <Seo
+        title={meta.title}
+        description={meta.description}
+        path="/contacts"
+        keywords={["contacto", "desarrollador web Costa Rica", "Steven Gazo"]}
+        jsonLd={jsonLd}
+      />
 
-      {/* Grid */}
       <motion.div
         variants={containerVariants}
-        className="relative z-10 w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 gap-8"
+        initial="hidden"
+        animate="visible"
+        className="w-full py-8"
       >
-        {/* Links */}
-        <motion.div
-          variants={itemVariants}
-          className="bg-white p-6 rounded-2xl shadow-lg flex flex-col items-center"
-        >
-          <h3 className="text-cyan-950 text-2xl font-bold mb-6">
-            Contact Links
-          </h3>
+        <PageHeader
+          eyebrow="Hablemos"
+          title="Ponete en"
+          highlight="contacto"
+          subtitle="¿Tenés una idea, una vacante o una consulta técnica? Escribime por el
+            canal que prefieras y te respondo."
+        />
 
-          <ul className="w-full space-y-4">
-            {[
-              {
-                title: "Whatsapp",
-                icon: FaWhatsapp,
-                url: "https://wa.me/86279806",
-                user: "stevengazo",
-              },
-              {
-                title: "Linkedin",
-                icon: FaLinkedin,
-                url: "https://www.linkedin.com/in/stevengazo/",
-                user: "stevengazo",
-              },
-              {
-                title: "Email",
-                icon: FaMailBulk,
-                url: "mailto:steven.gazo@hotmail.com",
-                user: "steven.gazo@hotmail.com",
-              },
-              {
-                title: "GitHub",
-                icon: FaGithub,
-                url: "https://github.com/stevengazo",
-                user: "stevengazo",
-              },
-            ].map((item, i) => (
-              <motion.li key={i} variants={itemVariants}>
-                <ContactCard
-                  title={item.title}
-                  _icon={item.icon}
-                  url={item.url}
-                  username={item.user}
-                />
-              </motion.li>
-            ))}
-          </ul>
-        </motion.div>
-
-        {/* Formulario */}
-        <motion.form
-          variants={itemVariants}
-          onSubmit={handleSubmit}
-          className="bg-white p-6 rounded-2xl shadow-lg w-full flex flex-col"
-        >
-          <h3 className="text-cyan-950 text-2xl font-bold mb-4">
-            Send me a Message
-          </h3>
-
-          <p className="italic text-gray-500 mb-6">
-            If you have an idea or need to contact me, send me a message.
-          </p>
-
-          <div className="mb-4">
-            <label className="block text-cyan-950 font-medium mb-2">Name</label>
-            <input
-              type="text"
-              name="name"
-              required
-              placeholder="Your Name"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-400 transition"
-            />
-          </div>
-
-          <div className="mb-4">
-            <label className="block text-cyan-950 font-medium mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              name="email"
-              required
-              placeholder="Your Email"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-400 transition"
-            />
-          </div>
-
-          <div className="mb-4">
-            <label className="block text-cyan-950 font-medium mb-2">
-              Message
-            </label>
-            <textarea
-              name="message"
-              required
-              rows="5"
-              placeholder="Write your message here"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-400 transition"
-            ></textarea>
-          </div>
-
-          <motion.button
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            type="submit"
-            className="w-full bg-cyan-950 text-white p-3 rounded-lg hover:bg-cyan-900 transition-colors"
+        <div className="grid w-full grid-cols-1 items-start gap-8 lg:grid-cols-2">
+          <motion.section
+            variants={itemVariants}
+            aria-labelledby="titulo-canales"
+            className={cardClasses}
           >
-            Send
-          </motion.button>
+            <h2 id="titulo-canales" className="mb-2 text-2xl font-bold text-white">
+              Canales directos
+            </h2>
+            <p className="mb-6 text-sm text-slate-400">
+              La vía más rápida es WhatsApp o correo.
+            </p>
 
-          {message && (
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-green-600 mt-4 text-center"
+            <ul className="space-y-3">
+              {channels.map(({ title, icon, url, user }) => (
+                <li key={title}>
+                  <ContactCard title={title} icon={icon} url={url} username={user} />
+                </li>
+              ))}
+            </ul>
+
+            <p className="mt-6 flex items-center gap-2 border-t border-slate-700/60 pt-6 text-sm text-slate-400">
+              <span
+                aria-hidden="true"
+                className="h-2 w-2 flex-shrink-0 rounded-full bg-emerald-400"
+              />
+              Disponible para nuevos proyectos · Costa Rica (GMT−6)
+            </p>
+          </motion.section>
+
+          <motion.form
+            variants={itemVariants}
+            onSubmit={handleSubmit}
+            aria-labelledby="titulo-formulario"
+            className={cardClasses}
+          >
+            <h2 id="titulo-formulario" className="mb-2 text-2xl font-bold text-white">
+              Enviame un mensaje
+            </h2>
+            <p className="mb-6 text-sm text-slate-400">
+              Contame en qué estás trabajando y te contesto al correo que dejés.
+            </p>
+
+            <div className="mb-4">
+              <label htmlFor="name" className={labelClasses}>
+                Nombre
+              </label>
+              <input
+                id="name"
+                type="text"
+                name="name"
+                required
+                autoComplete="name"
+                placeholder="Tu nombre"
+                className={fieldClasses}
+              />
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="email" className={labelClasses}>
+                Correo electrónico
+              </label>
+              <input
+                id="email"
+                type="email"
+                name="email"
+                required
+                autoComplete="email"
+                placeholder="tu@correo.com"
+                className={fieldClasses}
+              />
+            </div>
+
+            <div className="mb-6">
+              <label htmlFor="message" className={labelClasses}>
+                Mensaje
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                required
+                rows="5"
+                placeholder="Escribí tu mensaje aquí"
+                className={`${fieldClasses} resize-y`}
+              />
+            </div>
+
+            {/* Honeypot: oculto a la vista y fuera del orden de tabulación. */}
+            <div className="hidden" aria-hidden="true">
+              <label htmlFor="company">No completar este campo</label>
+              <input id="company" type="text" name="company" tabIndex={-1} autoComplete="off" />
+            </div>
+
+            <motion.button
+              whileHover={{ scale: status === "sending" ? 1 : 1.02 }}
+              whileTap={{ scale: status === "sending" ? 1 : 0.98 }}
+              type="submit"
+              disabled={status === "sending"}
+              className="w-full rounded-xl bg-cyan-500 p-3 font-semibold text-slate-950 transition-colors hover:bg-cyan-400 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {message}
-            </motion.p>
-          )}
-        </motion.form>
+              {status === "sending" ? "Enviando…" : "Enviar mensaje"}
+            </motion.button>
+
+            <p aria-live="polite" className="mt-4 min-h-[1.5rem] text-center text-sm">
+              {status === "success" && (
+                <span className="text-emerald-400">
+                  Mensaje enviado. Te respondo pronto.
+                </span>
+              )}
+              {status === "error" && (
+                <span className="text-red-400">
+                  No se pudo enviar. Escribime a {site.social.email}.
+                </span>
+              )}
+            </p>
+          </motion.form>
+        </div>
       </motion.div>
-    </motion.section>
+    </>
   );
 };
+
 export default ContactPage;

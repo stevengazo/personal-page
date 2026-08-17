@@ -1,0 +1,6 @@
+# Netlify: las rutas estaticas ya existen como HTML propio tras el prerender,
+# asi que aqui solo hace falta cubrir las rutas dinamicas de la SPA.
+/projectview/*   /index.html   200
+
+# Cualquier otra URL desconocida cae en la 404 real (con noindex).
+/*               /404.html     404

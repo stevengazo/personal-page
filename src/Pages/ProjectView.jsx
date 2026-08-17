@@ -1,12 +1,12 @@
-import { useParams } from "react-router-dom";
-import { useEffect, useState, lazy, Suspense } from "react";
-import { FaGithub } from "react-icons/fa";
-import { RotateLoader } from "react-spinners";
-import { Helmet } from "react-helmet";
+import { lazy, Suspense, useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { FaGithub, FaArrowLeft } from "react-icons/fa";
+import Seo from "../Components/Seo";
+import PageLoader from "../Components/PageLoader";
 import client from "../client/contentful";
+import { site } from "../../site.config.mjs";
 
-// Lazy load del componente RichTextRendered
-const RichTextRendered = lazy(() => import("../Components/RichTextRenderer"));
+const RichTextRenderer = lazy(() => import("../Components/RichTextRenderer"));
 
 const ProjectView = () => {
   const { id } = useParams();
@@ -14,80 +14,91 @@ const ProjectView = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    setProject(null);
+
     const fetchProject = async () => {
       try {
         const entry = await client.getEntry(id);
-        setProject(entry);
+        if (!cancelled) setProject(entry);
       } catch (error) {
         console.error("Error fetching project:", error);
       } finally {
-        setTimeout(() => setLoading(false), 1000);
+        // Sin retraso artificial: el spinner dura lo que dura la peticion.
+        if (!cancelled) setLoading(false);
       }
     };
 
     if (id) fetchProject();
+    return () => {
+      cancelled = true;
+    };
   }, [id]);
 
-  if (loading) {
-    return (
-      <div className="w-full flex flex-col justify-center items-center gap-4 relative overflow-hidden">
-        <RotateLoader size={36} color="#FACC15" />
-        <p className="text-white italic font-light animate-pulse">
-          Cargando...
-        </p>
-      </div>
-    );
-  }
+  if (loading) return <PageLoader label="Cargando proyecto…" />;
 
   if (!project) {
     return (
-      <div className="w-fit flex items-center justify-center text-white relative overflow-hidden">
-        <p className="text-lg">No se encontró el proyecto.</p>
-      </div>
+      <>
+        {/* Un proyecto inexistente no debe entrar al indice de busqueda. */}
+        <Seo
+          title="Proyecto no encontrado | Steven Gazo"
+          description="El proyecto que buscas no existe o ya no está publicado."
+          noindex
+        />
+        <div className="flex min-h-[50vh] flex-col items-center justify-center gap-4 text-center">
+          <p className="text-lg text-white">No se encontró el proyecto.</p>
+          <Link to="/projects" className="text-cyan-400 transition hover:text-cyan-300">
+            ← Volver a proyectos
+          </Link>
+        </div>
+      </>
     );
   }
 
-  const { projectTitle, description, gitHub, tags, full, image } =
-    project.fields;
+  const { projectTitle, description, gitHub, tags, full, image } = project.fields;
+  const tagList = Array.isArray(tags) ? tags : [];
+  const path = `/projectview/${id}`;
 
-  // Imagen dinámica (si existe en Contentful)
   const imageUrl = image?.fields?.file?.url
     ? `https:${image.fields.file.url}`
-    : "https://tuapp.com/default-preview.png";
+    : site.ogImage;
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: projectTitle,
+    description,
+    url: `${site.url}${path}`,
+    inLanguage: "es",
+    author: { "@id": `${site.url}/#person` },
+    keywords: tagList.join(", ") || undefined,
+    dateModified: project.sys.updatedAt,
+    ...(gitHub ? { codeRepository: gitHub } : {}),
+  };
 
   return (
-    <div className="w-full flex flex-col items-center py-10 overflow-y-auto relative">
-      {/* 🔥 METADATOS DINÁMICOS */}
-      <Helmet>
-        <title>{projectTitle} | Mi Portafolio</title>
+    <article className="w-full py-8">
+      <Seo
+        title={`${projectTitle} | Proyectos de Steven Gazo`}
+        description={description || `Proyecto ${projectTitle} desarrollado por Steven Gazo.`}
+        path={path}
+        image={imageUrl}
+        type="article"
+        keywords={tagList}
+        jsonLd={jsonLd}
+      />
 
-        <meta
-          name="description"
-          content={description || "Proyecto desarrollado por Steven Gazo"}
-        />
-        <meta name="keywords" content={tags?.join(", ")} />
-        <meta name="author" content="Steven Gazo" />
+      <Link
+        to="/projects"
+        className="mb-8 inline-flex items-center gap-2 text-sm text-slate-400 transition hover:text-cyan-300"
+      >
+        <FaArrowLeft size={12} aria-hidden="true" /> Volver a proyectos
+      </Link>
 
-        {/* Open Graph */}
-        <meta property="og:title" content={projectTitle} />
-        <meta property="og:description" content={description} />
-        <meta property="og:type" content="website" />
-        <meta
-          property="og:url"
-          content={`https://tuapp.com/project/${id}`}
-        />
-        <meta property="og:image" content={imageUrl} />
-
-        {/* Twitter */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={projectTitle} />
-        <meta name="twitter:description" content={description} />
-        <meta name="twitter:image" content={imageUrl} />
-      </Helmet>
-
-      {/* Header */}
-      <header className="flex flex-col md:flex-row items-center justify-center gap-3 px-6 mb-6 relative z-10">
-        <h1 className="text-white font-bold text-3xl text-center tracking-wide">
+      <header className="mb-6 flex flex-col items-center justify-center gap-3 px-2 md:flex-row">
+        <h1 className="text-center text-3xl font-bold tracking-wide text-white">
           {projectTitle}
         </h1>
         {gitHub && (
@@ -95,28 +106,26 @@ const ProjectView = () => {
             href={gitHub}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-white hover:scale-110 hover:text-indigo-400 transition-transform duration-300"
-            aria-label="Repositorio en GitHub"
+            className="text-white transition-transform duration-300 hover:scale-110 hover:text-cyan-300"
+            aria-label={`Ver el repositorio de ${projectTitle} en GitHub`}
           >
-            <FaGithub size={32} />
+            <FaGithub size={28} />
           </a>
         )}
       </header>
 
-      {/* Descripción */}
       {description && (
-        <p className="text-gray-300 text-center italic text-base max-w-3xl md:max-w-4xl lg:max-w-5xl mb-6 px-4 md:px-6 lg:px-10 leading-relaxed relative z-10">
+        <p className="mx-auto mb-6 max-w-3xl px-2 text-center text-base italic leading-relaxed text-slate-300">
           {description}
         </p>
       )}
 
-      {/* Tags */}
-      {tags?.length > 0 && (
-        <ul className="flex flex-wrap justify-center gap-2 mb-8 px-4 relative z-10">
-          {tags.map((tag, index) => (
+      {tagList.length > 0 && (
+        <ul className="mb-10 flex flex-wrap justify-center gap-2 px-2">
+          {tagList.map((tag) => (
             <li
-              key={index}
-              className="bg-slate-700 text-gray-100 border border-slate-600 rounded-full px-3 py-1 text-xs uppercase tracking-wide hover:bg-slate-600 transition-colors"
+              key={tag}
+              className="rounded-full border border-slate-600 bg-slate-700 px-3 py-1 text-xs uppercase tracking-wide text-slate-100"
             >
               {tag}
             </li>
@@ -124,19 +133,12 @@ const ProjectView = () => {
         </ul>
       )}
 
-      {/* Contenido Rich Text */}
-      <main className="text-white w-full max-w-[1200px] px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 mb-12 relative z-10">
-        <Suspense
-          fallback={
-            <div className="flex justify-center items-center py-10">
-              <RotateLoader size={24} color="#FACC15" />
-            </div>
-          }
-        >
-          <RichTextRendered richText={full} />
+      <div className="mx-auto w-full max-w-4xl px-2 text-white sm:px-4">
+        <Suspense fallback={<PageLoader label="Cargando contenido…" />}>
+          <RichTextRenderer richText={full} />
         </Suspense>
-      </main>
-    </div>
+      </div>
+    </article>
   );
 };
 

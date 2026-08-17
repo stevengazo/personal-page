@@ -1,24 +1,31 @@
-const ContactCard = ({ title, _icon: Icon, url, username }) => {
+const ContactCard = ({ title, icon: Icon, url, username }) => {
+  const isMail = url?.startsWith("mailto:");
+
   return (
     <a
       href={url}
-      target="_blank"
+      target={isMail ? undefined : "_blank"}
       rel="noopener noreferrer"
-      aria-label={`Abrir perfil de ${title}`}
-      className="group flex items-center gap-4 p-4 rounded-xl border border-slate-200 bg-white/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300"
+      aria-label={`${title}: ${username}`}
+      className="group flex items-center gap-4 rounded-xl border border-slate-700/60 bg-slate-800/40 p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-400/50 hover:bg-slate-800/70"
     >
-      <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-lg bg-slate-100 text-slate-700 group-hover:bg-blue-50 group-hover:text-blue-500 transition-colors duration-300">
-        <Icon size={28} />
-      </div>
+      <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-slate-700/60 text-slate-200 transition-colors duration-300 group-hover:bg-cyan-500/20 group-hover:text-cyan-300">
+        <Icon size={24} aria-hidden="true" />
+      </span>
 
-      <div className="flex flex-col">
-        <span className="text-slate-800 font-medium text-sm group-hover:text-blue-600 transition-colors duration-300">
+      <span className="flex min-w-0 flex-col">
+        <span className="text-sm font-medium text-white transition-colors duration-300 group-hover:text-cyan-300">
           {title}
         </span>
-        <span className="text-xs text-slate-500 italic truncate max-w-[180px]">
-          {username}
-        </span>
-      </div>
+        <span className="truncate text-xs text-slate-400">{username}</span>
+      </span>
+
+      <span
+        aria-hidden="true"
+        className="ml-auto text-slate-600 transition-all duration-300 group-hover:translate-x-1 group-hover:text-cyan-300"
+      >
+        →
+      </span>
     </a>
   );
 };

@@ -1,10 +1,11 @@
+import { createClient } from "contentful";
+import { credentials } from "../../site.config.mjs";
 
-
-import { createClient } from 'contentful';
-
+// Las credenciales tienen valores por defecto embebidos en site.config.mjs, asi
+// que el cliente funciona sin .env; las variables de entorno los sobreescriben.
 const client = createClient({
-  space: 'rrrdxlcb7vsn', // Reemplaza con tu Space ID
-  accessToken: 'CjYYXwIkNP44oA80IM4CEbmt1z2hwuiuZh2P2n-J5EE', // Reemplaza con tu Content Delivery API Access Token
+  space: credentials.contentfulSpaceId,
+  accessToken: credentials.contentfulAccessToken,
 });
 
 export default client;

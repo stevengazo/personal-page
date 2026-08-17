@@ -1,134 +1,113 @@
-import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import { motion } from "motion/react";
 
 const tableVariants = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.4,
-      when: "beforeChildren",
-      staggerChildren: 0.05,
-    },
+    transition: { duration: 0.35, when: "beforeChildren", staggerChildren: 0.04 },
   },
 };
 
 const rowVariants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 12 },
   visible: { opacity: 1, y: 0 },
 };
 
-const ProjectTable = ({ projects }) => {
-  return (
-    <motion.div
-      variants={tableVariants}
-      initial="hidden"
-      animate="visible"
-      className="w-full overflow-x-auto rounded-2xl border border-slate-800 bg-slate-900 shadow-lg"
-    >
-      <table className="min-w-full text-sm text-left text-gray-300">
-        
-        {/* HEADER */}
-        <thead className="bg-slate-800 text-gray-400 uppercase text-xs tracking-wider">
-          <tr>
-            <th className="px-5 py-4">ID</th>
-            <th className="px-5 py-4">Proyecto</th>
-            <th className="px-5 py-4">Descripción</th>
-            <th className="px-5 py-4">Tags</th>
-            <th className="px-5 py-4 text-center">Estado</th>
-            <th className="px-5 py-4 text-center">GitHub</th>
-          </tr>
-        </thead>
+const ProjectTable = ({ projects }) => (
+  <motion.div
+    variants={tableVariants}
+    initial="hidden"
+    animate="visible"
+    className="w-full overflow-x-auto rounded-2xl border border-slate-800 bg-slate-900/80 shadow-lg"
+  >
+    <table className="min-w-full text-left text-sm text-slate-300">
+      <caption className="sr-only">
+        Listado de proyectos con su descripción, tecnologías, estado y repositorio
+      </caption>
 
-        {/* BODY */}
-        <tbody className="divide-y divide-slate-800">
-          {projects.map((item) => {
-            const {
-              projectId,
-              projectTitle,
-              description,
-              isActive,
-              gitHub,
-              tags,
-            } = item.fields;
+      <thead className="bg-slate-800 text-xs uppercase tracking-wider text-slate-400">
+        <tr>
+          <th scope="col" className="px-5 py-4">Proyecto</th>
+          <th scope="col" className="px-5 py-4">Descripción</th>
+          <th scope="col" className="px-5 py-4">Tecnologías</th>
+          <th scope="col" className="px-5 py-4 text-center">Estado</th>
+          <th scope="col" className="px-5 py-4 text-center">Repositorio</th>
+        </tr>
+      </thead>
 
-            return (
-              <motion.tr
-                key={projectId}
-                variants={rowVariants}
-                whileHover={{
-                  scale: 1.01,
-                  backgroundColor: "rgba(30,41,59,0.6)",
-                }}
-                transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                className="cursor-default"
-              >
-                {/* ID */}
-                <td className="px-5 py-4 text-gray-400">
-                  #{projectId}
-                </td>
+      <tbody className="divide-y divide-slate-800">
+        {projects.map((item) => {
+          const { projectTitle, description, isActive, gitHub, tags } = item.fields;
+          // Contentful no garantiza que `tags` venga definido en cada entrada.
+          const tagList = Array.isArray(tags) ? tags : [];
 
-                {/* TITLE */}
-                <td className="px-5 py-4 font-semibold text-white">
-                  {projectTitle}
-                </td>
-
-                {/* DESCRIPTION */}
-                <td
-                  className="px-5 py-4 text-gray-400 max-w-xs truncate"
-                  title={description}
+          return (
+            <motion.tr
+              key={item.sys.id}
+              variants={rowVariants}
+              className="transition-colors hover:bg-slate-800/60"
+            >
+              <th scope="row" className="px-5 py-4 text-left font-semibold text-white">
+                <Link
+                  to={`/projectview/${item.sys.id}`}
+                  className="transition-colors hover:text-cyan-300"
                 >
-                  {description}
-                </td>
+                  {projectTitle}
+                </Link>
+              </th>
 
-                {/* TAGS */}
-                <td className="px-5 py-4">
-                  <div className="flex flex-wrap gap-2">
-                    {tags.map((tag, i) => (
-                      <motion.span
-                        key={i}
-                        whileHover={{ scale: 1.1 }}
-                        className="bg-slate-800 border border-slate-700 text-gray-300 text-xs px-2 py-1 rounded-md"
-                      >
-                        {tag}
-                      </motion.span>
-                    ))}
-                  </div>
-                </td>
+              <td className="max-w-xs truncate px-5 py-4 text-slate-400" title={description}>
+                {description}
+              </td>
 
-                {/* STATUS */}
-                <td className="px-5 py-4 text-center">
-                  <motion.span
-                    whileHover={{ scale: 1.05 }}
-                    className={`px-3 py-1 text-xs rounded-full font-medium ${
-                      isActive
-                        ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-                        : "bg-red-500/20 text-red-400 border border-red-500/30"
-                    }`}
-                  >
-                    {isActive ? "Activo" : "Inactivo"}
-                  </motion.span>
-                </td>
+              <td className="px-5 py-4">
+                <div className="flex flex-wrap gap-2">
+                  {tagList.map((tag) => (
+                    <span
+                      key={tag}
+                      className="rounded-md border border-slate-700 bg-slate-800 px-2 py-1 text-xs text-slate-300"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </td>
 
-                {/* GITHUB */}
-                <td className="px-5 py-4 text-center">
-                  <motion.a
+              <td className="px-5 py-4 text-center">
+                <span
+                  className={`rounded-full px-3 py-1 text-xs font-medium ${
+                    isActive
+                      ? "border border-emerald-500/30 bg-emerald-500/20 text-emerald-400"
+                      : "border border-slate-500/30 bg-slate-500/20 text-slate-400"
+                  }`}
+                >
+                  {isActive ? "Activo" : "Archivado"}
+                </span>
+              </td>
+
+              <td className="px-5 py-4 text-center">
+                {gitHub ? (
+                  <a
                     href={gitHub}
                     target="_blank"
                     rel="noopener noreferrer"
-                    whileHover={{ scale: 1.1 }}
-                    className="text-yellow-400 hover:text-yellow-300 text-sm font-medium transition"
+                    aria-label={`Ver el repositorio de ${projectTitle} en GitHub`}
+                    className="text-sm font-medium text-cyan-400 transition hover:text-cyan-300"
                   >
                     Ver repo →
-                  </motion.a>
-                </td>
-              </motion.tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </motion.div>
-  );
-};
+                  </a>
+                ) : (
+                  <span className="text-xs text-slate-500">—</span>
+                )}
+              </td>
+            </motion.tr>
+          );
+        })}
+      </tbody>
+    </table>
+  </motion.div>
+);
 
 export default ProjectTable;

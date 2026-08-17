@@ -1,3 +1,127 @@
+/**
+ * Tipografia auto-hospedada.
+ *
+ * Se declaran a mano en vez de importar el CSS del paquete porque ese incluye
+ * siete subconjuntos (cirilico, griego, vietnamita...) que acabarian copiados
+ * al build sin que nadie los descargue nunca. El rango latino ya cubre el
+ * espanol, tildes y enne incluidas, y al ser fuentes variables un solo archivo
+ * sirve todos los pesos.
+ */
+@font-face {
+  font-family: "Inter Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("@fontsource-variable/inter/files/inter-latin-wght-normal.woff2")
+    format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Space Grotesk Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300 700;
+  src: url("@fontsource-variable/space-grotesk/files/space-grotesk-latin-wght-normal.woff2")
+    format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Evita que el navbar fijo tape el destino de los anclajes. */
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    @apply bg-slate-950 font-sans text-white antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display tracking-tight;
+  }
+
+  /* Foco visible y consistente para navegacion con teclado. */
+  :focus-visible {
+    @apply rounded-sm outline-none ring-2 ring-cyan-400 ring-offset-2 ring-offset-slate-950;
+  }
+
+  ::selection {
+    @apply bg-cyan-400/30 text-white;
+  }
+}
+
+@layer components {
+  /* Enlace de salto que solo aparece al tabular, para lectores de pantalla. */
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100]
+           focus:rounded-lg focus:bg-cyan-500 focus:px-4 focus:py-2 focus:font-medium focus:text-slate-950;
+  }
+
+  /* Texto con degradado, para los acentos de titulo. */
+  .text-gradient {
+    @apply bg-gradient-to-r from-cyan-300 via-sky-300 to-blue-400 bg-clip-text text-transparent;
+  }
+
+  /**
+   * Tarjeta con borde degradado: el degradado va en el fondo del contenedor y
+   * un pseudo-elemento tapa el interior, dejando visible solo el perimetro.
+   * Asi el borde puede tener color variable, algo que `border` no permite.
+   */
+  .card-glow {
+    @apply relative rounded-2xl border border-slate-700/60 bg-slate-900/50 transition-all duration-300;
+  }
+
+  .card-glow::before {
+    @apply pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300;
+    content: "";
+    background: linear-gradient(140deg, rgba(34, 211, 238, 0.14), transparent 55%);
+  }
+
+  .card-glow:hover {
+    @apply -translate-y-1 border-cyan-400/40;
+  }
+
+  .card-glow:hover::before {
+    @apply opacity-100;
+  }
+}
+
+@layer utilities {
+  /* Retícula técnica de fondo, atenuada hacia los bordes con una máscara. */
+  .bg-grid {
+    background-image: linear-gradient(rgba(148, 163, 184, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(148, 163, 184, 0.07) 1px, transparent 1px);
+    background-size: 56px 56px;
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+  }
+}
+
+/* Respeta la preferencia del sistema de reducir movimiento. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

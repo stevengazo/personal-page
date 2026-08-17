@@ -1,54 +1,64 @@
-import { FaGithub } from "react-icons/fa";
+import { FaGithub, FaArrowRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const ProjectCard = ({ id, title, sortDescription, description, tags = [], gitHub }) => {
+  const summary = description || sortDescription;
+
   return (
-    <div className="group relative border border-slate-700/70 bg-slate-800/60 rounded-2xl p-6 shadow-md hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-300 backdrop-blur-sm overflow-hidden">
-      {/* Efecto de brillo al hacer hover */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-      <Link to={`/projectview/${id}`} className="relative flex flex-col justify-between h-full z-10">
-        {/* Header */}
-        <div className="mb-3">
-          <h3 className="text-lg md:text-xl font-semibold text-white text-center group-hover:text-blue-400 transition-colors">
+    <article className="card-glow group flex h-full flex-col overflow-hidden p-6">
+      <div className="relative flex flex-1 flex-col">
+        <h3 className="mb-3 text-lg font-semibold text-white transition-colors group-hover:text-cyan-300">
+          {/* Enlace "estirado": el ::after cubre la tarjeta entera, asi todo el
+              bloque es clicable sin anidar el enlace de GitHub dentro de otro
+              <a>, que es HTML invalido y rompe la navegacion por teclado. */}
+          <Link to={`/projectview/${id}`} className="after:absolute after:inset-0">
             {title}
-          </h3>
-          <p className="text-gray-300 text-sm italic text-center mt-2 leading-relaxed">
-            <span className="block md:hidden">{sortDescription}</span>
-            <span className="hidden md:block">{description}</span>
-          </p>
-        </div>
+          </Link>
+        </h3>
 
-        {/* Tags */}
+        {summary && (
+          <p className="mb-5 line-clamp-3 text-sm leading-relaxed text-slate-400">
+            {summary}
+          </p>
+        )}
+
         {tags.length > 0 && (
-          <ul className="flex flex-wrap justify-center gap-2 mt-3">
-            {tags.map((tag, index) => (
+          <ul className="mt-auto flex flex-wrap gap-2">
+            {tags.map((tag) => (
               <li
-                key={index}
-                className="px-2 py-1 text-xs bg-slate-700/80 text-gray-200 rounded-full italic hover:bg-slate-600/80 transition-colors truncate"
+                key={tag}
+                className="rounded-md border border-slate-700/70 bg-slate-800/70 px-2 py-1 font-mono text-[11px] text-slate-300"
               >
                 {tag}
               </li>
             ))}
           </ul>
         )}
+      </div>
 
-        {/* GitHub link */}
+      <div className="relative z-10 mt-5 flex items-center justify-between border-t border-slate-700/50 pt-4">
+        <span className="inline-flex items-center gap-2 text-xs font-medium text-slate-400 transition-colors group-hover:text-cyan-300">
+          Ver detalle
+          <FaArrowRight
+            size={10}
+            aria-hidden="true"
+            className="transition-transform group-hover:translate-x-1"
+          />
+        </span>
+
         {gitHub && (
-          <div className="flex justify-center mt-4">
-            <a
-              href={gitHub}
-              target="_blank"
-              rel="noopener noreferrer"
-              title="Ver en GitHub"
-              className="text-gray-300 hover:text-blue-400 transition-transform duration-300 hover:scale-110"
-            >
-              <FaGithub size={26} />
-            </a>
-          </div>
+          <a
+            href={gitHub}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Ver el repositorio de ${title} en GitHub`}
+            className="text-slate-400 transition-colors hover:text-cyan-300"
+          >
+            <FaGithub size={18} />
+          </a>
         )}
-      </Link>
-    </div>
+      </div>
+    </article>
   );
 };
 
